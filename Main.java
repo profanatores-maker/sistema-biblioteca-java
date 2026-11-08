@@ -1,59 +1,121 @@
-﻿import java.util.Scanner; // permite utilizar el comando Scanner
-// scanner es una clase de Java que permite leer datos ingresados por el usuario u otras fuentes
-
+﻿import java.util.Scanner;
 public class Main {
-
     public static void main(String[] args) {
-
-        Scanner entrada = new Scanner(System.in); // creamos un objeto de tipo Scanner llamado "entrada"
-
+        Scanner entrada = new Scanner(System.in);
         System.out.println("=== SISTEMA DE BIBLIOTECA ===");
+        // REGISTRO DE UNA NOVELA
+        System.out.println("\n=== REGISTRAR NOVELA ===");
+        System.out.print("Título: ");
+        String tituloNovela = entrada.nextLine();
+        System.out.print("Autor: ");
+        String autorNovela = entrada.nextLine();
+        System.out.print("Categoría: ");
+        String categoriaNovela = entrada.nextLine();
+        System.out.print("Género literario: ");
+        String genero = entrada.nextLine();
+
+        // Creamos un objeto de la clase Novela
+        Novela novela = new Novela(tituloNovela, autorNovela, categoriaNovela, genero);
+
+        // REGISTRO DE UN LIBRO ESCOLAR
+        System.out.println("\n=== REGISTRAR LIBRO ESCOLAR ===");
+        System.out.print("Título: ");
+        String tituloEscolar = entrada.nextLine();
+        System.out.print("Autor: ");
+        String autorEscolar = entrada.nextLine();
+        System.out.print("Categoría: ");
+        String categoriaEscolar = entrada.nextLine();
+        System.out.print("Materia: ");
+        String materia = entrada.nextLine();
+        System.out.print("Grado escolar: ");
+        String grado = entrada.nextLine();
+
+        // Creamos un objeto de la clase LibroEscolar
+        LibroEscolar libroEscolar = new LibroEscolar(tituloEscolar, autorEscolar, categoriaEscolar,materia, grado);
+
+        // metodo para MOSTRAR INFORMACIÓN DE LOS LIBROS
+        System.out.println("\n=== INFORMACIÓN DE LOS LIBROS ===");
+        novela.mostrarInformacion(); // Muestra los datos de la novela
+        novela.describirNovela();    // Ejecuta un método exclusivo de Novela
+
         System.out.println();
-
-        // Solicitar información del libro
-        System.out.print("Ingresa el título del libro: ");
-        String titulo = entrada.nextLine(); // el programa espera que el usuario escriba datos
-
-        System.out.print("Ingresa el autor: ");
-        String autor = entrada.nextLine(); // el programa espera que el usuario escriba datos
-
-        System.out.print("Ingresa la categoría: ");
-        String categoria = entrada.nextLine(); // el programa espera que el usuario escriba datos
-
-        // Libro es la clase, libro es el objeto que estamos creando, new indica que queremos crear un nuevo objeto 
-        // y los valores entre paréntesis se envían al constructor para inicializar sus atributos.
-        Libro libro = new Libro(titulo, autor, categoria);
-
-        System.out.println();
-        System.out.println("=== INFORMACIÓN DEL LIBRO ===");
-
-        // Mostrar información
-        libro.mostrarInformacion();
-
+        libroEscolar.mostrarInformacion(); // Muestra los datos del libro escolar
+        libroEscolar.describirContenido(); // Ejecuta un método exclusivo de LibroEscolar
         entrada.close();
     }
 }
-
-class Libro { // Se crea la clase "Libro"
-    // Se crean los atributos de la clase "Libro"
-    // los atributos en cierto modo son variables de una clase, ya que son los datos de cada objeto
+// CLASE BASE
+class Libro {
+    // Atributos compartidos por las clases derivadas
     String titulo;
     String autor;
     String categoria;
 
-    // Se crea el constructor
+    // Constructor de la clase base
     public Libro(String titulo, String autor, String categoria) {
         this.titulo = titulo;
         this.autor = autor;
         this.categoria = categoria;
-    } // "Los atributos son variables que representan las características de un objeto. 
-     // En este caso, un libro tiene título, autor y categoría. 
-     // El constructor se utiliza al crear el objeto para inicializar esos atributos con los valores que le proporcionamos."
-
-    // Se crea el método "mostrarInformacion"
+    }
+    // Método heredado por las clases derivadas
     public void mostrarInformacion() {
         System.out.println("Título: " + titulo);
         System.out.println("Autor: " + autor);
         System.out.println("Categoría: " + categoria);
+    }
+}
+// CLASE DERIVADA: NOVELA
+class Novela extends Libro { // Hereda los atributos y métodos de Libro
+
+    String genero; // Atributo exclusivo de Novela
+
+    // Constructor de la clase derivada
+    public Novela(String titulo, String autor,
+                  String categoria, String genero) {
+
+        super(titulo, autor, categoria); // Inicializa los atributos heredados
+
+        this.genero = genero; // Inicializa el atributo propio de Novela
+    }
+    // Sobrescribe el método heredado de Libro
+    @Override
+    public void mostrarInformacion() {
+
+        super.mostrarInformacion(); // Reutiliza el método de la clase base
+
+        System.out.println("Género literario: " + genero); // Agrega el género
+    }
+    // Método exclusivo de la clase Novela
+    public void describirNovela() {
+        System.out.println("Este libro pertenece al género de novela.");
+    }
+}
+// CLASE DERIVADA: LIBRO ESCOLAR
+class LibroEscolar extends Libro { // Hereda los atributos y métodos de Libro
+    String materia; // Atributo exclusivo de LibroEscolar
+    String grado;   // Otro atributo exclusivo de LibroEscolar
+
+    // Constructor de la clase derivada
+    public LibroEscolar(String titulo, String autor,
+                        String categoria, String materia,
+                        String grado) {
+
+        super(titulo, autor, categoria); // Inicializa los atributos heredados
+
+        this.materia = materia; // Inicializa el atributo materia
+        this.grado = grado;     // Inicializa el atributo grado
+    }
+    // Sobrescribe el método heredado de Libro
+    @Override
+    public void mostrarInformacion() {
+        super.mostrarInformacion(); // Reutiliza el método de la clase base
+
+        System.out.println("Materia: " + materia); // Agrega la materia
+        System.out.println("Grado escolar: " + grado); // Agrega el grado
+    }
+
+    // Método exclusivo de la clase LibroEscolar
+    public void describirContenido() {
+        System.out.println("Este libro es utilizado como material escolar.");
     }
 }
